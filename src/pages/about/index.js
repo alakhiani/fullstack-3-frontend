@@ -51,20 +51,20 @@ export default function About( { skills } ) {
 }
 
 export async function getStaticProps() {
+    let skills = [];
+
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/skills.json`);
+        const data = await response.json();
+        skills = data.split(",");
+    } catch (error) {
+        console.log(error);
+    }
+
     return {
         props: {
-            skills: [
-                "Java",
-                "React",
-                "Next.js",
-                "Spring",
-                "C#",
-                "Python",
-                "JavaScript",
-                "Databases",
-                "HTML",
-                "Git",
-            ]
+            skills,
         },
+        revalidate: 10, // In seconds
     };
 }
