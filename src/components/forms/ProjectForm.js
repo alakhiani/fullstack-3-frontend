@@ -4,9 +4,11 @@ import { Chip, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/materi
 import { Controller } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
-export default function ProjectForm() {
+export default function ProjectForm({ onSubmit }) {
 
+    // Set up the form fields for validation
     const defaultValues = {
         name: "",
         description: "",
@@ -15,6 +17,23 @@ export default function ProjectForm() {
         imageUrl: "",
     }
 
+    const projectFormSchema = yup.object().shape({
+        name: yup.string().required('A project name is required.'),
+        description: yup.string().required('A project description is required.'),
+        overview: yup.string().required('A project overview is required.'),
+        tools: yup.array().min(1, 'At least one tool is required.'),
+        imageUrl: yup.string().required('A project image url is required.'),
+    })
+
+    const { control, watch, reset, handleSubmit } = useForm({
+        defaultValues,
+        resolver: yupResolver(projectFormSchema),
+        mode: 'onChange',
+    })
+
+    const imageUrlValue = watch('imageUrl');
+
+    // Fetch the skills list from firebase to populate the drop down
     const [skills, setSkills] = useState([]);
 
     useEffect(() => {
@@ -31,22 +50,14 @@ export default function ProjectForm() {
         }
     }
 
-    const projectFormSchema = yup.object().shape({
-        name: yup.string().required('A project name is required.'),
-        description: yup.string().required('A project description is required.'),
-        overview: yup.string().required('A project overview is required.'),
-        tools: yup.array().min(1, 'At least one tool is required.'),
-        imageUrl: yup.string().required('A project image url is required.'),
-    })
-
-    const { control } = useForm({
-        defaultValues,
-        resolver: yupResolver(projectFormSchema),
-        mode: 'onChange',
-    })
-
+    // Code to render the form
     return (
-        <form>
+        <form
+            id="project-form"
+            onReset={() => reset(defaultValues)}
+            onSubmit={handleSubmit(onSubmit)}
+            style={{ padding: '24px' }}
+        >
             <Grid container spacing={4}>
                 <Grid item xs={8}>
                     <Controller
@@ -142,6 +153,33 @@ export default function ProjectForm() {
                         )}
                     />
                 </Grid>
+                <Grid item xs={12}>
+                    <Controller
+                        name="imageUrl"
+                        control={control}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                {...field}
+                                label="Project Image URL"
+                                variant="outlined"
+                                fullWidth
+                                error={!!fieldState.error}
+                                helperText={fieldState.error?.message}
+                            />
+                        )}
+                    />
+                </Grid>
+                {
+                    imageUrlValue &&
+                    <Grid item xs={12}>
+                        {/* <Image width={200} height={200} src={imageUrlValue} alt="Project Image" /> */}
+                        <img
+                            src={imageUrlValue}
+                            alt="Project Image"
+                            style={{ width: 100, height: 100 }}
+                        />
+                    </Grid>
+                }
             </Grid>
         </form>
     );
