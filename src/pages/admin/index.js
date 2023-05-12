@@ -23,6 +23,13 @@ export default function Admin() {
         }
     }
 
+    const handleOnSubmit = (newProject) => {
+        setProjects(prevProjects => ([
+            ...prevProjects,
+            { ...newProject, _id: projects.length + 1 }
+        ]))
+    }
+
     return (
         <section>
             <PageDescription
@@ -46,6 +53,7 @@ export default function Admin() {
             <AddNewProjectModal
                 open={isNewProjectModalVisible}
                 onClose={() => setIsNewProjectModalVisible(false)}
+                onSubmit={handleOnSubmit}
             />
         </section>
     );
