@@ -42,7 +42,7 @@ export default function Admin() {
                     size="large"
                     onClick={() => setIsNewProjectModalVisible(true)}
                 >
-                    Add Project
+                    Add New Project
                 </Button>
             </div>
             {
