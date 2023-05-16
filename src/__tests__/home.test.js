@@ -15,4 +15,12 @@ describe('Home page', () => {
 
         expect(heading).toBeInTheDocument();
     });
+
+    it('renders a description', () => {
+        render(<Home summary="My summary"/>);
+
+        const heading = screen.getByText('My summary');
+
+        expect(heading).toBeInTheDocument();
+    });
 });
