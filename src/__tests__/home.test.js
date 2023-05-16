@@ -6,7 +6,7 @@ import mockRouter from 'next-router-mock';
 jest.mock('next/router', () => require('next-router-mock'));
 
 describe('Home page', () => {
-    it('renders a heading', () => {
+    it('renders a heading with the portfolio owner name', () => {
         render(<Home name="John Doe"/>);
 
         const heading = screen.getByRole('heading', {
@@ -16,7 +16,7 @@ describe('Home page', () => {
         expect(heading).toBeInTheDocument();
     });
 
-    it('renders a description', () => {
+    it('renders a description with the portfolio owner summary', () => {
         render(<Home summary="My summary"/>);
 
         const heading = screen.getByText('My summary');
