@@ -1,4 +1,5 @@
 export default function handler(req, res) {
+    console.log("In local client-side API");
     res.status(200).json(
         [
             {

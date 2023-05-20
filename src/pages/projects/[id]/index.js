@@ -1,3 +1,4 @@
+import { getProject, getProjects } from "@/api/projects";
 import PageDescription from "@/components/PageDescription";
 import { Box, Button, Chip, Grid, Stack } from "@mui/material";
 import { NextSeo } from "next-seo";
@@ -85,8 +86,7 @@ export default function Project({ project }) {
 
 export async function getStaticPaths() {
     try {
-        const response = await fetch(`http://localhost:3000/api/projects`);
-        const projects = await response.json();
+        const projects = await getProjects();
         const paths = projects.map(project => {
             return {
                 params: { id: project._id.toString() },
@@ -105,8 +105,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
     try {
-        const response = await fetch(`http://localhost:3000/api/projects/${params.id}`);
-        const project = await response.json();
+        const project = await getProject(params.id);
         return {
             props: {
                 project,

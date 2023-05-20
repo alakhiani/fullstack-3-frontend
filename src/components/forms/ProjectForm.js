@@ -15,6 +15,7 @@ export default function ProjectForm({ onSubmit }) {
         overview: "",
         tools: [],
         imageUrl: "",
+        projectLink: "",
     }
 
     const projectFormSchema = yup.object().shape({
@@ -23,6 +24,7 @@ export default function ProjectForm({ onSubmit }) {
         overview: yup.string().required('A project overview is required.'),
         tools: yup.array().min(1, 'At least one tool is required.'),
         imageUrl: yup.string().required('A project image url is required.'),
+        projectLink: yup.string(),
     })
 
     const { control, watch, reset, handleSubmit } = useForm({
@@ -173,10 +175,11 @@ export default function ProjectForm({ onSubmit }) {
                     imageUrlValue &&
                     <Grid item xs={12}>
                         {/* <Image width={200} height={200} src={imageUrlValue} alt="Project Image" /> */}
-                        <img
+                        <Image 
                             src={imageUrlValue}
                             alt="Project Image"
-                            style={{ width: 100, height: 100 }}
+                            width={100}
+                            height={100}
                         />
                     </Grid>
                 }

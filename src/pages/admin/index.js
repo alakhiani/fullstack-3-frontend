@@ -1,3 +1,4 @@
+import { getProjects } from "@/api/projects";
 import PageDescription from "@/components/PageDescription";
 import ProjectItem from "@/components/ProjectItem";
 import AddNewProjectModal from "@/components/modals/AddNewProjectModal";
@@ -15,8 +16,7 @@ export default function Admin() {
 
     const fetchProjects = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/projects');
-            const data = await response.json();
+            const data = await getProjects();
             setProjects(data);
         } catch (error) {
             console.log(error);
