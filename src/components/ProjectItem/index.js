@@ -11,6 +11,7 @@ export default function ProjectItem({ project, handleDelete, handleEdit }) {
                     alt={project.name}
                     width={500}
                     height={300}
+                    priority={true}
                 />
             </Grid>
             <Grid item md={6}>

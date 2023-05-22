@@ -26,7 +26,7 @@ export default function Admin() {
     }
 
     const handleOnSubmit = async (project) => {
-        const copyOfProjects = [...projects];        
+        const copyOfProjects = [...projects];
         if (!!project._id) { // Edit the project
             const updatedProject = await updateProject(project);
             console.log(updatedProject);
@@ -40,11 +40,14 @@ export default function Admin() {
         setIsNewProjectModalVisible(false);
     }
 
-    const handleDelete = (project) => {
-        const copyOfProjects = [...projects];
-        const index = copyOfProjects.findIndex(p => p._id === project._id);
-        copyOfProjects.splice(index, 1);
-        setProjects(copyOfProjects);
+    const handleDelete = async (project) => {
+        const isDeleted = await deleteProject(project._id);
+        if (isDeleted) {
+            const copyOfProjects = [...projects];
+            const index = copyOfProjects.findIndex(p => p._id === project._id);
+            copyOfProjects.splice(index, 1);
+            setProjects(copyOfProjects);
+        }
     }
 
     return (

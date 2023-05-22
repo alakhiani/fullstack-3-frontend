@@ -3,7 +3,7 @@ const SERVER_URL = "http://localhost:8001";
 
 export const getProjects = async () => {
     try {
-        console.log("In getProjects " + SERVER_URL);
+        console.log("In getProjects " + SERVER_URL + " " + process.env.SERVER_URL);
         const response = await fetch(SERVER_URL + "/projects");
         const json = await response.json();
         return json.data;
@@ -41,9 +41,9 @@ export const createProject = async (data) => {
     }
 }
 
-export const updateProject = async (id, data) => {
+export const updateProject = async (data) => {
     try {
-        const response = await fetch(SERVER_URL + `/projects/${id}`, {
+        const response = await fetch(SERVER_URL + `/projects/${data._id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -63,8 +63,7 @@ export const deleteProject = async (id) => {
         const response = await fetch(SERVER_URL + `/projects/${id}`, {
             method: "DELETE",
         });
-        const json = await response.json();
-        return json.status === 204;
+        return response.status === 204;
     } catch (error) {
         console.log(error);
         return {};
