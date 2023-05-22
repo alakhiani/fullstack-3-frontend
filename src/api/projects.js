@@ -1,8 +1,10 @@
-export const getProjects = async () => {
+// const SERVER_URL = process.env.SERVER_URL;
+const SERVER_URL = "http://localhost:8001";
 
+export const getProjects = async () => {
     try {
-        console.log("In getProjects " + process.env.SERVER_URL);
-        const response = await fetch(process.env.SERVER_URL + "/projects");
+        console.log("In getProjects " + SERVER_URL);
+        const response = await fetch(SERVER_URL + "/projects");
         const json = await response.json();
         return json.data;
     } catch (error) {
@@ -13,7 +15,7 @@ export const getProjects = async () => {
 
 export const getProject = async (id) => {
     try {
-        const response = await fetch(process.env.SERVER_URL + `/projects/${id}`);
+        const response = await fetch(SERVER_URL + `/projects/${id}`);
         const json = await response.json();
         return json.data;
     } catch (error) {
@@ -24,7 +26,7 @@ export const getProject = async (id) => {
 
 export const createProject = async (data) => {
     try {
-        const response = await fetch(process.env.SERVER_URL + "/projects", {
+        const response = await fetch(SERVER_URL + "/projects", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -41,7 +43,7 @@ export const createProject = async (data) => {
 
 export const updateProject = async (id, data) => {
     try {
-        const response = await fetch(process.env.SERVER_URL + `/projects/${id}`, {
+        const response = await fetch(SERVER_URL + `/projects/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -58,7 +60,7 @@ export const updateProject = async (id, data) => {
 
 export const deleteProject = async (id) => {
     try {
-        const response = await fetch(process.env.SERVER_URL + `/projects/${id}`, {
+        const response = await fetch(SERVER_URL + `/projects/${id}`, {
             method: "DELETE",
         });
         const json = await response.json();

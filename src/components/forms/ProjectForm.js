@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-export default function ProjectForm({ onSubmit }) {
+export default function ProjectForm({ onSubmit, editValues }) {
 
     // Set up the form fields for validation
     const defaultValues = {
@@ -27,8 +27,8 @@ export default function ProjectForm({ onSubmit }) {
         projectLink: yup.string(),
     })
 
-    const { control, watch, reset, handleSubmit } = useForm({
-        defaultValues,
+    const { control: formControl, watch, reset, handleSubmit } = useForm({
+        defaultValues: editValues || defaultValues,
         resolver: yupResolver(projectFormSchema),
         mode: 'onChange',
     })
@@ -64,7 +64,7 @@ export default function ProjectForm({ onSubmit }) {
                 <Grid item xs={8}>
                     <Controller
                         name="name"
-                        control={control}
+                        control={formControl}
                         render={({ field, fieldState }) => (
                             <TextField
                                 {...field}
@@ -80,7 +80,7 @@ export default function ProjectForm({ onSubmit }) {
                 <Grid item xs={12}>
                     <Controller
                         name="description"
-                        control={control}
+                        control={formControl}
                         render={({ field, fieldState }) => (
                             <TextField
                                 {...field}
@@ -99,7 +99,7 @@ export default function ProjectForm({ onSubmit }) {
                 <Grid item xs={12}>
                     <Controller
                         name="overview"
-                        control={control}
+                        control={formControl}
                         render={({ field, fieldState }) => (
                             <TextField
                                 {...field}
@@ -119,7 +119,7 @@ export default function ProjectForm({ onSubmit }) {
                     <InputLabel id="tools-label">Tools</InputLabel>
                     <Controller
                         name="tools"
-                        control={control}
+                        control={formControl}
                         render={({ field, fieldState }) => (
                             <Select
                                 {...field}
@@ -157,8 +157,24 @@ export default function ProjectForm({ onSubmit }) {
                 </Grid>
                 <Grid item xs={12}>
                     <Controller
+                        name="projectLink"
+                        control={formControl}
+                        render={({ field, fieldState }) => (
+                            <TextField
+                                {...field}
+                                label="Project Link"
+                                variant="outlined"
+                                fullWidth
+                                error={!!fieldState.error}
+                                helperText={fieldState.error?.message}
+                            />
+                        )}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <Controller
                         name="imageUrl"
-                        control={control}
+                        control={formControl}
                         render={({ field, fieldState }) => (
                             <TextField
                                 {...field}
@@ -173,13 +189,12 @@ export default function ProjectForm({ onSubmit }) {
                 </Grid>
                 {
                     imageUrlValue &&
-                    <Grid item xs={12}>
-                        {/* <Image width={200} height={200} src={imageUrlValue} alt="Project Image" /> */}
-                        <Image 
+                    <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
+                        <Image
                             src={imageUrlValue}
                             alt="Project Image"
-                            width={100}
-                            height={100}
+                            width={250}
+                            height={150}
                         />
                     </Grid>
                 }

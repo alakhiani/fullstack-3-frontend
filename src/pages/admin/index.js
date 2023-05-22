@@ -1,12 +1,14 @@
-import { getProjects } from "@/api/projects";
+import { getProjects, updateProject, deleteProject, createProject } from "@/api/projects";
 import PageDescription from "@/components/PageDescription";
 import ProjectItem from "@/components/ProjectItem";
 import AddNewProjectModal from "@/components/modals/AddNewProjectModal";
+import EditProjectModal from "@/components/modals/EditProjectModal";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function Admin() {
 
+    const [editProject, setEditProject] = useState(null);
     const [isNewProjectModalVisible, setIsNewProjectModalVisible] = useState(false);
     const [projects, setProjects] = useState([]);
 
@@ -23,11 +25,26 @@ export default function Admin() {
         }
     }
 
-    const handleOnSubmit = (newProject) => {
-        setProjects(prevProjects => ([
-            ...prevProjects,
-            { ...newProject, _id: projects.length + 1 }
-        ]))
+    const handleOnSubmit = async (project) => {
+        const copyOfProjects = [...projects];        
+        if (!!project._id) { // Edit the project
+            const updatedProject = await updateProject(project);
+            console.log(updatedProject);
+            const index = copyOfProjects.findIndex(p => p._id === updatedProject._id);
+            copyOfProjects[index] = updatedProject;
+        } else { // Create the project
+            const newProject = await createProject(project);
+            copyOfProjects.push(newProject);
+        }
+        setProjects(copyOfProjects);
+        setIsNewProjectModalVisible(false);
+    }
+
+    const handleDelete = (project) => {
+        const copyOfProjects = [...projects];
+        const index = copyOfProjects.findIndex(p => p._id === project._id);
+        copyOfProjects.splice(index, 1);
+        setProjects(copyOfProjects);
     }
 
     return (
@@ -47,13 +64,24 @@ export default function Admin() {
             </div>
             {
                 projects.map(project => (
-                    <ProjectItem key={project._id} project={project} />
+                    <ProjectItem
+                        key={project._id}
+                        project={project}
+                        handleDelete={() => handleDelete(project)}
+                        handleEdit={() => setEditProject(project)}
+                    />
                 ))
             }
             <AddNewProjectModal
                 open={isNewProjectModalVisible}
                 onClose={() => setIsNewProjectModalVisible(false)}
                 onSubmit={handleOnSubmit}
+            />
+            <EditProjectModal
+                open={!!editProject}
+                onClose={() => setEditProject(null)}
+                onSubmit={handleOnSubmit}
+                project={editProject}
             />
         </section>
     );
