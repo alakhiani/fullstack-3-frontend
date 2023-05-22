@@ -1,9 +1,7 @@
-// const SERVER_URL = process.env.SERVER_URL;
-const SERVER_URL = "http://localhost:8001";
+const SERVER_URL = process.env.SERVER_URL;
 
 export const getProjects = async () => {
     try {
-        console.log("In getProjects " + SERVER_URL + " " + process.env.SERVER_URL);
         const response = await fetch(SERVER_URL + "/projects");
         const json = await response.json();
         return json.data;

@@ -29,7 +29,6 @@ export default function Admin() {
         const copyOfProjects = [...projects];
         if (!!project._id) { // Edit the project
             const updatedProject = await updateProject(project);
-            console.log(updatedProject);
             const index = copyOfProjects.findIndex(p => p._id === updatedProject._id);
             copyOfProjects[index] = updatedProject;
         } else { // Create the project

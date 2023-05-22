@@ -1,17 +1,20 @@
 /** @type {import('next').NextConfig} */
 
-require("dotenv").config();
+require('dotenv').config();
 
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    remotePatterns: [      
+    remotePatterns: [
       {
-        protocol: "https",
-        hostname: "d33wubrfki0l68.cloudfront.net",               
-      }
-    ]
-  }
-}
+        protocol: 'https',
+        hostname: 'd33wubrfki0l68.cloudfront.net',
+      },
+    ],
+  },
+  env: {
+    SERVER_URL: process.env.SERVER_URL,
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
